@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Spider Invasion!
-Version: 0.1
-Plugin URI: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion
+Version: 0.2
+Plugin URI: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 Description: Spiders invade your oldest posts. The older the post, the more spiders you get.
 Author: Mathieu Decaffmeyer
 Author URI: http://www.mendoweb.be/
@@ -22,15 +22,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function date_diff_year($d1, $d2) {
+	/*
+	// only from PHP 5.3 and later versions
+	$datetime_d2 = date_create( $d2 );
+	$datetime_d1 = date_create( $d1 );
+	$interval = date_diff( $datetime_d2, $datetime_d1 );
+	return 1*$interval->format( '%y' );
+	*/
+	// compatible with PHP 5.2 and lower
+	$diff = abs( strtotime( $d2 ) - strtotime( $d1 ) );
+	return floor( $diff / (365*60*60*24) );
+}
+
 function spider_invasion_js() {
 	if( !is_single() ) return;
 	$date_post = get_the_date( 'Ymd' );
 	if( empty( $date_post ) ) return;
 	
-	$datetime_current = date_create( date( 'Ymd' ) );
-	$datetime_post = date_create( $date_post );
-	$interval = date_diff( $datetime_current, $datetime_post );
-	$nb_spiders = $interval->format( '%y' );
+	$nb_spiders = date_diff_year( $date_post, date( 'Ymd' ) );
 	if( $nb_spiders == 0 ) return;
 	
 	$invade_content = FALSE;

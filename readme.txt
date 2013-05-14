@@ -1,6 +1,6 @@
 === Spider Invasion! ===
 Tags: spider
-Requires at least: 3.5
+Requires at least: 3.3
 Tested up to: 3.5.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -21,3 +21,11 @@ Demo page & Blog: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 1. Upload the 'spider-invasion' folder to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Have a look at some old posts
+
+== Changelog ==
+
+= 0.2 =
+* added fix for PHP version < 5.3
+
+= 0.1 =
+* init
