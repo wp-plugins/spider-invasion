@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Spider Invasion!
-Version: 0.2
+Version: 0.3
 Plugin URI: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 Description: Spiders invade your oldest posts. The older the post, the more spiders you get.
 Author: Mathieu Decaffmeyer
@@ -28,7 +28,7 @@ function date_diff_year($d1, $d2) {
 	$datetime_d2 = date_create( $d2 );
 	$datetime_d1 = date_create( $d1 );
 	$interval = date_diff( $datetime_d2, $datetime_d1 );
-	return 1*$interval->format( '%y' );
+	return (int) $interval->format( '%y' );
 	*/
 	// compatible with PHP 5.2 and lower
 	$diff = abs( strtotime( $d2 ) - strtotime( $d1 ) );
@@ -36,7 +36,7 @@ function date_diff_year($d1, $d2) {
 }
 
 function spider_invasion_js() {
-	if( !is_single() ) return;
+	if( !is_single() && !is_archive() ) return;
 	$date_post = get_the_date( 'Ymd' );
 	if( empty( $date_post ) ) return;
 	
@@ -45,10 +45,30 @@ function spider_invasion_js() {
 	
 	$invade_content = FALSE;
 	$max_density = 800*800;
+	$min_density = 1800*1800;
 	$plugin_images_dir = plugins_url( 'images' , __FILE__ );
+	$compressJS = TRUE;
 	
-	$str = <<<JS
+	echo '<!-- start spider invasion -->';
+	if($compressJS) {
+		$str = <<<JS
 <script>
+function getRandomPosition(e){var t=document.body.offsetHeight-e.clientHeight;var n=document.body.offsetWidth-e.clientWidth;var r=Math.floor(Math.random()*t);var i=Math.floor(Math.random()*n);return[r,i]}
+function spawnSpider(){var e="$plugin_images_dir/cute-spider-"+(Math.floor(Math.random()*3)+1)+".png";var t=document.createElement("img");t.setAttribute("style","opacity:0.5;position:absolute;");t.setAttribute("src",e);document.body.appendChild(t);var n=getRandomPosition(t);var r="$invade_content";if(r===""){var i=document.getElementById("content");if(i!=null&&n[1]>i.offsetLeft-t.clientHeight&&n[1]<i.offsetLeft+i.offsetWidth&&n[0]>i.offsetTop&&n[0]<i.offsetTop+i.offsetHeight){t.setAttribute("style","display:none;")}}t.style.top=n[0]+"px";t.style.left=n[1]+"px"}
+window.onload=function(){var e=document.body.offsetHeight*document.body.offsetWidth;var t=Math.floor(e/$max_density);var n=Math.floor(e/$min_density);var r=$nb_spiders>t?t<1?1:t:Math.floor($nb_spiders);r=$nb_spiders<n?n:$nb_spiders;for(i=0;i<r;++i)spawnSpider()}
+</script>
+JS;
+	}
+	else {
+		$str = <<<JS
+<script>
+function getRandomPosition(element) {
+	var x = document.body.offsetHeight-element.clientHeight;
+	var y = document.body.offsetWidth-element.clientWidth;
+	var randomX = Math.floor(Math.random()*x);
+	var randomY = Math.floor(Math.random()*y);
+	return [randomX,randomY];
+}
 function getRandomPosition(element) {
 	var x = document.body.offsetHeight-element.clientHeight;
 	var y = document.body.offsetWidth-element.clientWidth;
@@ -79,13 +99,18 @@ function spawnSpider() {
 }
 window.onload = function() {
 	var surface = document.body.offsetHeight*document.body.offsetWidth;
-	var density = Math.floor(surface/$max_density);
-	var nbSpiders = $nb_spiders > density ? (density < 1 ? 1 : density) : Math.floor($nb_spiders);
+	var densityMax = Math.floor(surface/$max_density);
+	var densityMin = Math.floor(surface/$min_density);
+	var nbSpiders = $nb_spiders > densityMax ? (densityMax < 1 ? 1 : densityMax) : Math.floor($nb_spiders);
+	nbSpiders = $nb_spiders < densityMin ? densityMin : $nb_spiders;
 	for(i=0;i<nbSpiders;++i) spawnSpider();
 }
 </script>
 JS;
+	}
 	echo $str;
+    echo '<!-- end spider invasion -->
+';
 }
 add_action('wp_head', 'spider_invasion_js');
 
