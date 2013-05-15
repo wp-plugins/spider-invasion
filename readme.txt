@@ -14,6 +14,8 @@ Spiders invade your oldest posts. The older the post, the more spiders you get!
 
 Spiders are showing up at random locations on your web page as your post get older.
 
+= Note that your post should be at least 1 year old for spiders to appear. =
+
 Demo page & Blog: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 
 == Installation ==
