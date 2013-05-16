@@ -17,7 +17,7 @@ Spiders are showing up at random locations on your web page as your post get old
 Demo page & Blog: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 
 = Note that your post should be at least 1 year old for spiders to appear. =
-Moreover, these spiders are kind of frightened and unadventurous, hence they may not show up all the time.
+Moreover, these spiders are kind of frightened and unadventurous hence they may not show up all the time and if you're approaching them too close, they will frighten away.
 
 == Installation ==
 
@@ -26,6 +26,12 @@ Moreover, these spiders are kind of frightened and unadventurous, hence they may
 3. Have a look at some old posts
 
 == Changelog ==
+
+= 0.4 =
+* using jquery to fix position related bugs
+* spawn animation
+* spiders escape in a zigzag when approaching
+* moved JS code in external file
 
 = 0.3 =
 * spiders invade old archive pages too
