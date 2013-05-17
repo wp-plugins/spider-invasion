@@ -27,6 +27,10 @@ Moreover, these spiders are kind of frightened and unadventurous hence they may 
 
 == Changelog ==
 
+= 0.5 =
+* spiders only in blog entries
+* JS fix
+
 = 0.4 =
 * using jquery to fix position related bugs
 * spawn animation

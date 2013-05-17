@@ -78,7 +78,7 @@ function spawnSpider() {
         width: '1px',
         height: '1px'
     });
-	if(param.invade_content == '') {
+	if(param.invade_content) {
 		if(
 	        $j("#content").length > 0 && 
 			xy[1] > ($j("#content").offset().left - img.height()) && xy[1] < ($j("#content").offset().left + $j("#content").width()) && 
@@ -130,11 +130,15 @@ function zigzagDefense(el) {
 }
 window.onload = function() {
 	var $j = jQuery.noConflict();
+	param.max_density = +param.max_density; // unary plus to convert string to int
+	param.min_density = +param.min_density;
+	param.nb_spiders = +param.nb_spiders;
+	param.invade_content = Boolean(param.invade_content);
 	var surface = $j('body').height()*$j('body').width();
 	var densityMax = Math.floor(surface/param.max_density);
 	var densityMin = Math.floor(surface/param.min_density);
 	var nbSpiders = param.nb_spiders > densityMax ? (densityMax < 1 ? 1 : densityMax) : Math.floor(param.nb_spiders);
-	nbSpiders = nbSpiders < densityMin ? densityMin : nbSpiders;
+	nbSpiders = (nbSpiders != 0 && nbSpiders < densityMin) ? densityMin : nbSpiders;
 	for(i=0;i<nbSpiders;++i) {
         setTimeout(function() {
             spawnSpider();
