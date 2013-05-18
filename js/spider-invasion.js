@@ -78,7 +78,7 @@ function spawnSpider() {
         width: '1px',
         height: '1px'
     });
-	if(param.invade_content) {
+	if(!param.invade_content) {
 		if(
 	        $j("#content").length > 0 && 
 			xy[1] > ($j("#content").offset().left - img.height()) && xy[1] < ($j("#content").offset().left + $j("#content").width()) && 

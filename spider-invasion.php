@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Spider Invasion!
-Version: 0.5
+Version: 0.5.1
 Plugin URI: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 Description: Spiders invade your oldest posts. The older the post, the more spiders you get.
 Author: Mathieu Decaffmeyer

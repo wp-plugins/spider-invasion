@@ -27,6 +27,9 @@ Moreover, these spiders are kind of frightened and unadventurous hence they may 
 
 == Changelog ==
 
+= 0.5.1 =
+* fixed JS code regression in 0.5
+
 = 0.5 =
 * spiders only in blog entries
 * JS fix
