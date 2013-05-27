@@ -59,7 +59,7 @@ function runSpawnAnimation(element) {
 }
 function spawnSpider() {
 	var $j = jQuery.noConflict();
-	var src = param.images_dir + '/cute-spider-' + (Math.floor(Math.random() * 3) + 1) + '.png';
+	var src = spider_invasion_param.images_dir + '/cute-spider-' + (Math.floor(Math.random() * 3) + 1) + '.png';
 	var img = $j('<img/>')
     	.css({
         	position: 'absolute',
@@ -78,11 +78,12 @@ function spawnSpider() {
         width: '1px',
         height: '1px'
     });
-	if(!param.invade_content) {
+	if(!spider_invasion_param.invade_content) {
+		var contentId = '#content';
 		if(
-	        $j("#content").length > 0 && 
-			xy[1] > ($j("#content").offset().left - img.height()) && xy[1] < ($j("#content").offset().left + $j("#content").width()) && 
-			xy[0] > $j("#content").offset().top && xy[0] < ($j("#content").offset().top + $j("#content").height())
+	        $j(contentId).length > 0 && 
+			xy[1] > ($j(contentId).offset().left - img.height()) && xy[1] < ($j(contentId).offset().left + $j(contentId).width()) && 
+			xy[0] > $j(contentId).offset().top && xy[0] < ($j(contentId).offset().top + $j(contentId).height())
 		) return;
 	}
     img.css({
@@ -128,16 +129,16 @@ function zigzagDefense(el) {
         top: '-=25'
     }, 30, 'linear', function() { zigzagDefense(el); });
 }
-window.onload = function() {
+jQuery(document).ready(function() {
 	var $j = jQuery.noConflict();
-	param.max_density = +param.max_density; // unary plus to convert string to int
-	param.min_density = +param.min_density;
-	param.nb_spiders = +param.nb_spiders;
-	param.invade_content = Boolean(param.invade_content);
+	spider_invasion_param.max_density = +spider_invasion_param.max_density; // unary plus to convert string to int
+	spider_invasion_param.min_density = +spider_invasion_param.min_density;
+	spider_invasion_param.nb_spiders = +spider_invasion_param.nb_spiders;
+	spider_invasion_param.invade_content = Boolean(spider_invasion_param.invade_content);
 	var surface = $j('body').height()*$j('body').width();
-	var densityMax = Math.floor(surface/param.max_density);
-	var densityMin = Math.floor(surface/param.min_density);
-	var nbSpiders = param.nb_spiders > densityMax ? (densityMax < 1 ? 1 : densityMax) : Math.floor(param.nb_spiders);
+	var densityMax = Math.floor(surface/spider_invasion_param.max_density);
+	var densityMin = Math.floor(surface/spider_invasion_param.min_density);
+	var nbSpiders = spider_invasion_param.nb_spiders > densityMax ? (densityMax < 1 ? 1 : densityMax) : Math.floor(spider_invasion_param.nb_spiders);
 	nbSpiders = (nbSpiders != 0 && nbSpiders < densityMin) ? densityMin : nbSpiders;
 	for(i=0;i<nbSpiders;++i) {
         setTimeout(function() {
@@ -152,4 +153,4 @@ window.onload = function() {
     }).on("click", ".spider-invader", function() {
         zigzagDefense($j(this));
     });
-}
+});

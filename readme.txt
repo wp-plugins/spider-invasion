@@ -12,7 +12,7 @@ Spiders invade your oldest posts. The older the post, the more spiders you get!
 
 Spiders invade your oldest posts. The older the post, the more spiders you get!
 
-Spiders are showing up at random locations on your web page as your post get older.
+Spiders are showing up at random locations on your web page as your post gets older.
 
 Demo page & Blog: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 
@@ -26,6 +26,9 @@ Moreover, these spiders are kind of frightened and unadventurous hence they may 
 3. Have a look at some old posts
 
 == Changelog ==
+
+= 0.6 =
+* improved compatibility with other plugins
 
 = 0.5.1 =
 * fixed JS code regression in 0.5

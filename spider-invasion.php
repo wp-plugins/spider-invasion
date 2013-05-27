@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Spider Invasion!
-Version: 0.5.1
+Version: 0.6
 Plugin URI: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 Description: Spiders invade your oldest posts. The older the post, the more spiders you get.
 Author: Mathieu Decaffmeyer
@@ -22,57 +22,79 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function includeJQuery() {
-	if ( !is_admin() ) {
-		wp_enqueue_script( 'jquery' );
+define( 'SPIDER_INVASION_FILE', __FILE__ );
+define( 'SPIDER_INVASION_VERSION', '0.6' );
+
+class SpiderInvasion_Init {
+	private static $instance;
+	
+	public static function getInstance() {
+		if( !self::$instance ) {
+			$class = __CLASS__;
+			new $class;
+		}
+		return self::$instance;
+	}
+	
+	private function __construct() {
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
+	}
+	
+	public function init() {
+		add_action( 'wp_head', array( $this, 'spider_invasion_js' ) );
+	}
+	
+	function get_date_diff($d1, $d2) {
+		/*
+		// only from PHP 5.3 and later versions
+		$datetime_d2 = date_create( $d2 );
+		$datetime_d1 = date_create( $d1 );
+		$interval = date_diff( $datetime_d2, $datetime_d1 );
+		return array(
+			'y' => (int) $interval->format( '%y' ), 
+			'm' => (int) $interval->format( '%m' ), 
+			'd' => (int) $interval->format( '%d' )
+		);
+		*/
+		// compatible with PHP 5.2 and lower
+		$diff = abs( strtotime( $d2 ) - strtotime( $d1 ) );
+		$years = floor($diff / (365*60*60*24));
+		$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+		$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+		return array(
+			'y' => $years, 
+			'm' => $months, 
+			'd' => $days
+		);
+	}
+	
+	function spider_invasion_js() {
+		if( 'post' != get_post_type() ) return;
+		$date_post = get_the_date( 'Ymd' );
+		if( empty( $date_post ) ) return;
+		
+		$date_diff = $this->get_date_diff( $date_post, date( 'Ymd' ) );
+		if( $date_diff['y']*12 + $date_diff['m'] < 8 ) return;
+		$nb_spiders = $date_diff['y'];
+		$compressJS = TRUE;
+		
+		wp_enqueue_script(
+			'spider-invasion', 
+			plugins_url( 'js', SPIDER_INVASION_FILE ) . '/spider-invasion' . ($compressJS ? '.min' : '') . '.js',
+			array( 'jquery' ),
+			SPIDER_INVASION_VERSION
+		);
+		$params = array(
+			'max_density' => 800*800,
+			'min_density' => 1800*1800,
+			'invade_content' => FALSE,
+			'images_dir' => plugins_url( 'images', SPIDER_INVASION_FILE ),
+			'nb_spiders' => $nb_spiders,
+		);
+		wp_localize_script( 'spider-invasion', 'spider_invasion_param', $params );
 	}
 }
-add_action( 'init', 'includeJQuery' );
 
-function get_date_diff($d1, $d2) {
-	/*
-	// only from PHP 5.3 and later versions
-	$datetime_d2 = date_create( $d2 );
-	$datetime_d1 = date_create( $d1 );
-	$interval = date_diff( $datetime_d2, $datetime_d1 );
-	return array(
-		'y' => (int) $interval->format( '%y' ), 
-		'm' => (int) $interval->format( '%m' ), 
-		'd' => (int) $interval->format( '%d' )
-	);
-	*/
-	// compatible with PHP 5.2 and lower
-	$diff = abs( strtotime( $d2 ) - strtotime( $d1 ) );
-	$years = floor($diff / (365*60*60*24));
-	$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-	$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-	return array(
-		'y' => $years, 
-		'm' => $months, 
-		'd' => $days
-	);
-}
-
-function spider_invasion_js() {
-	if( 'post' != get_post_type() ) return;
-	$date_post = get_the_date( 'Ymd' );
-	if( empty( $date_post ) ) return;
-	
-	$date_diff = get_date_diff( $date_post, date( 'Ymd' ) );
-	if( $date_diff['y']*12 + $date_diff['m'] < 8 ) return;
-	$nb_spiders = $date_diff['y'];
-	$compressJS = TRUE;
-	
-	wp_enqueue_script( 'spider-invasion', plugins_url( 'js' , __FILE__ ) . '/spider-invasion' . ($compressJS ? '.min' : '') . '.js' );
-	$params = array(
-		'max_density' => 800*800,
-		'min_density' => 1800*1800,
-		'invade_content' => FALSE,
-		'images_dir' => plugins_url( 'images' , __FILE__ ),
-		'nb_spiders' => $nb_spiders,
-	);
-	wp_localize_script( 'spider-invasion', 'param', $params );
-}
-add_action('wp_head', 'spider_invasion_js');
+SpiderInvasion_Init::getInstance();
 
 ?>
