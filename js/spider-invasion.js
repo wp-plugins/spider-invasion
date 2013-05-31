@@ -109,6 +109,7 @@ function spawnSpider() {
     	.addClass('spider-danger-zone')
         .appendTo('body')
         .data('spider', img);
+	img.data('danger-zone', dangerZone);
 }
 function spawnSpidersAtRandomIntervals(nbSpiders) {
 	var $j = jQuery.noConflict();
@@ -128,6 +129,7 @@ function zigzagDefense(el) {
         left: '-=13',
         top: '-=25'
     }, 30, 'linear', function() { zigzagDefense(el); });
+	el.data('danger-zone').remove();
 }
 jQuery(document).ready(function() {
 	var $j = jQuery.noConflict();
@@ -149,6 +151,8 @@ jQuery(document).ready(function() {
     	spawnSpidersAtRandomIntervals(nbSpiders);
     }, Math.floor(Math.random()*60000) + 5000);
     $j("body").on("mouseover", ".spider-danger-zone", function() {
+        zigzagDefense($j(this).data('spider'));
+    }).on("click", ".spider-danger-zone", function() {
         zigzagDefense($j(this).data('spider'));
     }).on("click", ".spider-invader", function() {
         zigzagDefense($j(this));

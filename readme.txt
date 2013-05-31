@@ -25,7 +25,18 @@ Moreover, these spiders are kind of frightened and unadventurous hence they may 
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Have a look at some old posts
 
+=Support=
+
+Did you enjoy this plugin? Please take a moment to rate and comment, this will keep me motivated to update this plugin for bugfixes and WordPress upgrades.
+
+=Before you downvote this plugin=
+
+*It didn't work for you? You found a bug?* Give me a description with some details in the support forum, and I will fix it as soon as I can.
+
 == Changelog ==
+
+= 0.7 =
+* bugfix unclickable links under danger-zone div
 
 = 0.6 =
 * improved compatibility with other plugins
