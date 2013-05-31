@@ -19,12 +19,6 @@ Demo page & Blog: http://www.mendoweb.be/blog/wordpress-plugin-spider-invasion/
 = Note that your post should be at least 1 year old for spiders to appear. =
 Moreover, these spiders are kind of frightened and unadventurous hence they may not show up all the time and if you're approaching them too close, they will frighten away.
 
-== Installation ==
-
-1. Upload the 'spider-invasion' folder to the '/wp-content/plugins/' directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Have a look at some old posts
-
 =Support=
 
 Did you enjoy this plugin? Please take a moment to rate and comment, this will keep me motivated to update this plugin for bugfixes and WordPress upgrades.
@@ -32,6 +26,12 @@ Did you enjoy this plugin? Please take a moment to rate and comment, this will k
 =Before you downvote this plugin=
 
 *It didn't work for you? You found a bug?* Give me a description with some details in the support forum, and I will fix it as soon as I can.
+
+== Installation ==
+
+1. Upload the 'spider-invasion' folder to the '/wp-content/plugins/' directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Have a look at some old posts
 
 == Changelog ==
 
